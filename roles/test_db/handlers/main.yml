@@ -1,0 +1,8 @@
+---
+- name: Import Test DB SQL
+  mysql_db:
+    name: "{{ test_db_name }}"
+    state: import
+    target: /tmp/test_db.sql
+    login_user: "{{ mysql_user }}"
+    login_password: "{{ mysql_password }}"

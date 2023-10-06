@@ -1,0 +1,8 @@
+---
+- name: Create MySQL test database
+  mysql_db:
+    name: "{{ test_db_name }}"
+    state: present
+    login_user: "{{ mysql_user }}"
+    login_password: "{{ mysql_password }}"
+  notify: Import Test DB SQL

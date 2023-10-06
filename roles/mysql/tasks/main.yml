@@ -1,0 +1,43 @@
+---
+- name: Secure MySQL Installation
+  mysql_user:
+    name: root
+    host: localhost
+    password: "{{ mysql_root_password }}"
+  when: mysql_installed.changed
+
+- name: Remove anonymous MySQL user
+  mysql_user:
+    name: ''
+    host: localhost
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  when: mysql_installed.changed
+
+- name: Remove MySQL test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  when: mysql_installed.changed
+
+- name: Create a MySQL user
+  mysql_user:
+    name: "{{ mysql_user }}"
+    host: localhost
+    password: "{{ mysql_password }}"
+    priv: '*.*:ALL'
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Flush privileges
+  mysql_user:
+    name: root
+    host: localhost
+    priv: "*.*:ALL,GRANT"
+    state: flushed
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+  when: mysql_installed.changed

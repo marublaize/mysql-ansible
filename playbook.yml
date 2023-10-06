@@ -1,0 +1,13 @@
+---
+- name: Deploy MySQL and Test Database
+  hosts: all
+  become: yes
+  vars:
+    mysql_root_password: "{{ ansible_env.MYSQL_ROOT_PASSWORD }}"
+    mysql_user: "{{ ansible_env.MYSQL_USER }}"
+    mysql_password: P@"{{ ansible_env.MYSQL_PASSWORD }}"
+    test_db_name: "{{ ansible_env.TEST_DB_NAME }}"
+  roles:
+    - common
+    - mysql
+    - test_db
